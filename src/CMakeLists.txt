@@ -1,19 +1,19 @@
-# Copyright 2018 the NTTEC authors
+# Copyright 2018 the QUADIRON authors
 #
-# This file is part of the NTTEC tools.
+# This file is part of the QUADIRON tools.
 #
-# The NTTEC tools are free software: you can redistribute it and/or modify
+# The QUADIRON tools are free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
 #
-# The NTTEC tools are distributed in the hope that it will be useful,
+# The QUADIRON tools are distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with the NTTEC tools.  If not, see <http://www.gnu.org/licenses/>.
+# along with the QUADIRON tools.  If not, see <http://www.gnu.org/licenses/>.
 
 ##############
 # Source files
@@ -60,20 +60,20 @@ set(TOOLS_BIN_NAME
 ##############
 
 find_package(GMPXX REQUIRED)
-find_package(NTTEC REQUIRED)
+find_package(QUADIRON REQUIRED)
 
-get_property(NTTEC_INCLUDE_DIRS
-  TARGET   NTTEC::static
+get_property(QUADIRON_INCLUDE_DIRS
+  TARGET   QUADIRON::static
   PROPERTY INTERFACE_INCLUDE_DIRECTORIES
 )
 
 foreach(tool ${TOOLS_BIN_NAME})
   target_include_directories(${tool}
     SYSTEM PUBLIC ${GMPXX_INCLUDE_DIRS}
-    SYSTEM PUBLIC ${NTTEC_INCLUDE_DIRS}
+    SYSTEM PUBLIC ${QUADIRON_INCLUDE_DIRS}
   )
   target_link_libraries(${tool}
-    NTTEC::static
+    QUADIRON::static
     ${GMPXX_LIBRARIES}
   )
 endforeach()
@@ -82,10 +82,10 @@ endforeach()
 # Root target
 #############
 
-add_custom_target(${NTTEC_TOOLS}
-  COMMENT "build the NTTEC tools"
+add_custom_target(${QUADIRON_TOOLS}
+  COMMENT "build the QUADIRON tools"
 )
 
-add_dependencies(${NTTEC_TOOLS}
+add_dependencies(${QUADIRON_TOOLS}
     ${TOOLS_BIN_NAME}
 )

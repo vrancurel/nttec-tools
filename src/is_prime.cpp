@@ -18,11 +18,10 @@
  */
 #include <gmpxx.h>
 
-#include <nttec/nttec.h>
+#include <quadiron/quadiron.h>
 
 int main(int argc, char **argv)
 {
-    nttec::gf::Prime<mpz_class> gfp(3);
     if (argc != 2) {
         std::cerr << "usage: is_prime n\n";
         return 1;
@@ -34,7 +33,7 @@ int main(int argc, char **argv)
         return 1;
     }
 
-    bool is_prime = gfp.is_prime(n);
+    bool is_prime = quadiron::arith::is_prime<mpz_class>(n);
     std::cerr << is_prime << "\n";
     return !is_prime;
 }

@@ -1,28 +1,25 @@
 /*
- * Copyright 2018 the NTTEC authors
+ * Copyright 2018 the QUADIRON authors
  *
- * This file is part of the NTTEC tools.
+ * This file is part of the QUADIRON tools.
  *
- * The NTTEC tools are free software: you can redistribute it and/or modify it
+ * The QUADIRON tools are free software: you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the Free
  * Software Foundation, either version 3 of the License, or (at your option) any
  * later version.
  *
- * The NTTEC tools are distributed in the hope that it will be useful, but
+ * The QUADIRON tools are distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
  * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
  * more details.
  *
  * You should have received a copy of the GNU General Public License along with
- * the NTTEC tools.  If not, see <http://www.gnu.org/licenses/>.
+ * the QUADIRON tools.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include <string>
-
 #include <signal.h>
 
-#include <gmpxx.h>
-
-#include <nttec/nttec.h>
+#include "quadiron_tools.h"
 
 double tot = 0;
 double ok = 0;
@@ -34,16 +31,21 @@ void sigint(int signo)
     exit(1);
 }
 
+gmp_randclass r(gmp_randinit_default);
+
+mpz_class rand_func(mpz_class n)
+{
+  return r.get_z_range(n);
+}
+
 int main(int argc, char **argv)
 {
-    nttec::gf::Prime<mpz_class> gfp(3);
     if (argc != 2) {
         std::cerr << "usage: find_primes n_bits\n";
         return 1;
     }
 
     int n_bits = std::stoi(argv[1]);
-    gmp_randclass r(gmp_randinit_default);
 
     signal(SIGINT, sigint);
 
@@ -52,7 +54,7 @@ int main(int argc, char **argv)
         if (n % 2 == 0) {
             continue;
         }
-        bool result = gfp._solovay_strassen(n);
+        bool result = quadiron::arith::solovay_strassen<mpz_class>(n, rand_func);
         tot++;
         if (result) {
             ok++;

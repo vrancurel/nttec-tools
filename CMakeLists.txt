@@ -1,28 +1,28 @@
-# Copyright 2018 the NTTEC authors
+# Copyright 2018 the QUADIRON authors
 #
-# This file is part of the NTTEC tools.
+# This file is part of the QUADIRON tools.
 #
-# The NTTEC tools are free software: you can redistribute it and/or modify
+# The QUADIRON tools are free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
 #
-# The NTTEC tools are distributed in the hope that it will be useful,
+# The QUADIRON tools are distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with the NTTEC tools.  If not, see <http://www.gnu.org/licenses/>.
+# along with the QUADIRON tools.  If not, see <http://www.gnu.org/licenses/>.
 cmake_minimum_required(VERSION 3.5)
 
 ######################
 # Project informations
 ######################
 
-project(nttec_tools CXX)
+project(quadiron_tools CXX)
 
-set(CMAKE_CXX_STANDARD          11)
+set(CMAKE_CXX_STANDARD          14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS        OFF)
 
@@ -57,7 +57,7 @@ set(SCRIPT_DIR ${CMAKE_CURRENT_SOURCE_DIR}/scripts)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY bin/${CMAKE_BUILD_TYPE})
 
 # Targets
-set(NTTEC_TOOLS tools)
+set(QUADIRON_TOOLS tools)
 
 ####################
 # Default build type
@@ -152,7 +152,7 @@ add_custom_target(format
   COMMAND clang-format -i ${ALL_SRCS}
   COMMENT "fix code formatting"
 )
-add_dependencies(format ${NTTEC_TOOLS})
+add_dependencies(format ${QUADIRON_TOOLS})
 
 set(CLANG_LINTS_LIST
   android-*
@@ -166,13 +166,13 @@ add_custom_target(lint
   COMMAND ${SCRIPT_DIR}/run-clang-tidy.py -checks=${CLANG_LINTS} -header-filter=.*
   COMMENT "run the linter"
 )
-add_dependencies(lint ${NTTEC_TOOLS})
+add_dependencies(lint ${QUADIRON_TOOLS})
 
 add_custom_target(fix-lint
   COMMAND ${SCRIPT_DIR}/run-clang-tidy.py -fix -checks=${CLANG_LINTS} -header-filter=.*
   COMMENT "run the linter and apply proposed fixes"
 )
-add_dependencies(fix-lint ${NTTEC_TOOLS})
+add_dependencies(fix-lint ${QUADIRON_TOOLS})
 
 ####################
 # Targets for the CI
@@ -185,10 +185,10 @@ add_custom_target(check-lint
   COMMAND test `${SCRIPT_DIR}/run-clang-tidy.py -checks=${CLANG_LINTS} -header-filter=.* | grep -Pc ${LINT_ERROR_PATTERN}` -eq 0
   COMMENT "check for lint errors"
 )
-add_dependencies(check-lint ${NTTEC_TOOLS})
+add_dependencies(check-lint ${QUADIRON_TOOLS})
 
 add_custom_target(check-format
   COMMAND test `clang-format -output-replacements-xml ${ALL_SRCS} ${TEST_SRC} | grep -c offset` -eq 0
   COMMENT "check code formatting"
 )
-add_dependencies(check-format ${NTTEC_TOOLS})
+add_dependencies(check-format ${QUADIRON_TOOLS})

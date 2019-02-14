@@ -1,6 +1,6 @@
-# nttec-tools
+# quadiron-tools
 
-NTTEC Tools
+QUADIRON Tools
 
 # Build from source
 
@@ -15,4 +15,4 @@ make
 
 ### Targets
 
-- `tools`: build the NTTEC tools
+- `tools`: build the QUADIRON tools

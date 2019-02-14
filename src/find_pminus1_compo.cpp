@@ -1,26 +1,31 @@
 /*
- * Copyright 2018 the NTTEC authors
+ * Copyright 2018 the QUADIRON authors
  *
- * This file is part of the NTTEC tools.
+ * This file is part of the QUADIRON tools.
  *
- * The NTTEC tools are free software: you can redistribute it and/or modify it
+ * The QUADIRON tools are free software: you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the Free
  * Software Foundation, either version 3 of the License, or (at your option) any
  * later version.
  *
- * The NTTEC tools are distributed in the hope that it will be useful, but
+ * The QUADIRON tools are distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
  * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
  * more details.
  *
  * You should have received a copy of the GNU General Public License along with
- * the NTTEC tools.  If not, see <http://www.gnu.org/licenses/>.
+ * the QUADIRON tools.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include <string>
 
-#include <gmpxx.h>
+#include "quadiron_tools.h"
 
-#include <nttec/nttec.h>
+gmp_randclass r(gmp_randinit_default);
+
+mpz_class rand_func(mpz_class n)
+{
+  return r.get_z_range(n);
+}
 
 int main(int argc, char **argv)
 {
@@ -37,13 +42,13 @@ int main(int argc, char **argv)
             n++;
             continue;
         }
-        if (nttec::arith::solovay_strassen(n)) {
+        if (quadiron::arith::solovay_strassen<mpz_class>(n, rand_func)) {
             // number is probably prime: double-check
-            if (nttec::arith::is_prime(n)) {
+            if (quadiron::arith::is_prime(n)) {
                 std::vector<mpz_class> primes;
-                std::vector<mpz_class> exponents;
+                std::vector<int> exponents;
 
-                nttec::arith::factor_prime(n-1, &primes, &exponents);
+                quadiron::arith::factor_prime<mpz_class>(n-1, &primes, &exponents);
                 typename std::vector<mpz_class>::size_type i;
                 mpz_class n_factors = 0;
                 for (i = 0; i != primes.size(); i++) {
